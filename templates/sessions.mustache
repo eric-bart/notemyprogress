@@ -1,0 +1,104 @@
+<div id="sessions-loader">
+    <div class="progressbar-fliplearning">
+        <div class="indeterminate"></div>
+    </div>
+</div>
+
+<v-app id="work_sessions" class="fliplearning">
+    <v-main>
+        <pageheader :pagetitle="strings.title" :helptitle="strings.helplabel" :exitbutton="strings.exitbutton"
+                    :helpcontents="get_help_content()" :groups="groups" :courseid="courseid" :userid="userid"></pageheader>
+        <v-container pa-8>
+            <v-row v-if="loading">
+                <span class="mb-1 mt-5 body-1" v-text="strings.graph_generating"></span>
+                <v-progress-linear indeterminate color="cyan"></v-progress-linear>
+            </v-row>
+            <div v-else>
+                <v-alert v-if="errors.length > 0" dense outlined type="error" v-text="strings.api_error_network"></v-alert>
+
+                <pagination
+                        :pages="pages" :name="strings.pagination_name" :nameseparator="strings.pagination_separator"
+                            @changepage="update_interactions" :title="strings.pagination_title"></pagination>
+
+                <v-row>
+                    <v-col cols="12" md="6">
+                        <v-card elevation="2" id="investedTime">
+
+                            <v-card-title class="justify-center">
+                                <h5 v-text="strings.time_inverted_title" id="investedTime"></h5>
+                            </v-card-title>
+                            <v-card-text>
+                                <chart
+                                        :container="'inverted_time'"
+                                        :chart="build_inverted_time_chart()"
+                                        :lang="strings.chart"
+                                ></chart>
+                                <span id="helpInvestedTime" class="caption" @click="open_chart_help('inverted_time')">
+                                <v-icon small v-text="'mdi-help-circle-outline'"></v-icon>
+                                <span v-text="strings.about"></span>
+                            </span>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+
+                    <v-col cols="12" md="6">
+                        <v-card elevation="2" id="sessionsPerHour">
+                            <v-card-title class="justify-center">
+                                <h5 v-text="strings.hours_sessions_title" id="hoursSessions"></h5>
+                            </v-card-title>
+                            <v-card-text>
+                                <chart
+                                        :container="'hour_sessions'"
+                                        :chart="build_hours_sessions_chart()"
+                                        :lang="strings.chart"
+                                ></chart>
+                                <span id="helpSessionsHour" class="caption" @click="open_chart_help('hours_sessions')">
+                                <v-icon small v-text="'mdi-help-circle-outline'"></v-icon>
+                                <span v-text="strings.about"></span>
+                            </span>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col cols="12">
+                        <v-card elevation="2" id="sessionsPerWeek">
+                            <v-card-title class="justify-center">
+                                <h5 v-text="strings.session_count_title" id="sessionsCount"></h5>
+                            </v-card-title>
+                            <v-card-text>
+                                <chart
+                                        :container="'sessions_count'"
+                                        :chart="build_sessions_count_chart()"
+                                        :lang="strings.chart"
+                                ></chart>
+                                <span id="helpSessionsPerWeek" class="caption" @click="open_chart_help('sessions_count')">
+                                <v-icon small v-text="'mdi-help-circle-outline'"></v-icon>
+                                <span v-text="strings.about"></span>
+                            </span>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+
+                <v-row justify="center">
+                    <v-col sm="12">
+                        <helpdialog
+                                :dialog="help_dialog"
+                                :title="strings.helplabel"
+                                :contents="help_contents"
+                                :exit="strings.exitbutton"
+                                @update_dialog="update_help_dialog"
+                        ></helpdialog>
+                    </v-col>
+                </v-row>
+
+                <v-row class="justify-center">
+                    <span v-text="get_timezone()"></span>
+                </v-row>
+            </div>
+
+        </v-container>
+    </v-main>
+</v-app>

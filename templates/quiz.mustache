@@ -1,0 +1,108 @@
+<div id="sessions-loader">
+    <div class="progressbar-fliplearning">
+        <div class="indeterminate"></div>
+    </div>
+</div>
+
+<v-app id="quiz" class="fliplearning">
+    <v-main>
+        <pageheader :pagetitle="strings.title" :helptitle="strings.helplabel" :exitbutton="strings.exitbutton"
+                    :helpcontents="get_help_content()" :groups="groups" :courseid="courseid" :userid="userid"></pageheader>
+        <v-container pa-8>
+            <v-row v-if="loading">
+                <span class="mb-1 mt-5 body-1" v-text="strings.graph_generating"></span>
+                <v-progress-linear indeterminate color="cyan"></v-progress-linear>
+            </v-row>
+            <div v-else>
+                <v-alert v-if="errors.length > 0" dense outlined type="error" v-text="strings.api_error_network"></v-alert>
+
+                <pagination
+                        :pages="pages" :name="strings.pagination_name" :nameseparator="strings.pagination_separator"
+                        @changepage="update_interactions" :title="strings.pagination_title"></pagination>
+
+                <v-row>
+                    <v-col cols="12" md="4">
+                        <v-subheader v-text="strings.quiz_label"></v-subheader>
+                    </v-col>
+                    <v-col cols="12" md="8">
+                        <v-select
+                                attach
+                                :items="quiz"
+                                item-text="name"
+                                item-value="attempts"
+                                :label="strings.quiz_label"
+                                v-model="default_quiz"
+                                v-on:change="calculate_questions_attempts"
+                                solo
+                        ></v-select>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col cols="12">
+                        <small v-text="get_quiz_info_text1()"></small>
+                        <br/>
+                        <small v-text="get_quiz_info_text2()"></small>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col cols="12" md="6">
+                        <v-card elevation="2">
+                            <v-card-title class="justify-center">
+                                <h5 v-text="strings.questions_attempts_chart_title"></h5>
+                            </v-card-title>
+                            <v-card-text>
+                                <chart
+                                        :container="'questions_attempts'"
+                                        :chart="build_questions_attempts_chart()"
+                                        :lang="strings.chart"
+                                ></chart>
+                                <span class="caption" @click="open_chart_help('questions_attempts')">
+                                <v-icon small v-text="'mdi-help-circle-outline'"></v-icon>
+                                <span v-text="strings.about"></span>
+                            </span>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+
+                    <v-col cols="12" md="6">
+                        <v-card elevation="2">
+                            <v-card-title class="justify-center">
+                                <h5 v-text="strings.hardest_questions_chart_title"></h5>
+                            </v-card-title>
+                            <v-card-text>
+                                <chart
+                                        :container="'hardest_questions'"
+                                        :chart="build_hardest_questions_chart()"
+                                        :lang="strings.chart"
+                                ></chart>
+                                <span class="caption" @click="open_chart_help('hardest_questions')">
+                                <v-icon small v-text="'mdi-help-circle-outline'"></v-icon>
+                                <span v-text="strings.about"></span>
+                            </span>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+
+                <v-row justify="center">
+                    <v-col sm="12">
+                        <helpdialog
+                                :dialog="help_dialog"
+                                :title="strings.helplabel"
+                                :contents="help_contents"
+                                :exit="strings.exitbutton"
+                                @update_dialog="update_help_dialog"
+                        ></helpdialog>
+                    </v-col>
+                </v-row>
+
+                <v-row class="justify-center">
+                    <span v-text="get_timezone()"></span>
+                </v-row>
+            </div>
+
+        </v-container>
+    </v-main>
+</v-app>

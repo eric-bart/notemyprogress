@@ -1,0 +1,3 @@
+UserID;"Nombre de usuario";Nombre;Apellido;Fecha;Hora;Accion;CoursID;"Nombre del curso";DetailID;Detalle;"Tipo de objeto utilizado"
+2;admin;Eric;Bart;05-05-21;11:33:49;viewed;3;"Systeme de Gestion de Bases de Donnees GMO 2020";;;
+2;admin;Eric;Bart;05-05-21;11:43:19;viewed;3;"Systeme de Gestion de Bases de Donnees GMO 2020";;;
