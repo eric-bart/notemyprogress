@@ -1,4 +1,7 @@
 <?php
+
+@copyright   2021 Éric Bart <eric.bart@etu.univ-tlse3.fr>, 2020 Edisson Sigua <edissonf.sigua@gmail.com>, Bryan Aguilar <bryan.aguilar6174@gmail.com>
+
 namespace local_fliplearning;
 
 require_once dirname(__FILE__) . '/../../../course/lib.php';
