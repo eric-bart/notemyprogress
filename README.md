@@ -1,8 +1,7 @@
 # Flip My Learning #
 
-TODO Describe the plugin shortly here.
+This is not the official repository for the note my progress plugin. This is only the repository of the work done by Eric Bart on the logs along with the rest of the plugin.
 
-TODO Provide more detailed description here.
 
 ## License ##
 
